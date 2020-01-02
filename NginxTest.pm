@@ -37,7 +37,7 @@ sub cfadmin {
     my $ip=$r->header_in("CF-Connecting-IP") || $r->header_in("X-Forwarded-For") || $r->remote_addr;
     $r->print("<html><body>\n");
     $r->print("<br><h1>Admin Page</h1>\n");
-    $r->print(sprintf("Welcome user %s of IP %s to the fake admin page<br>\n",$r->header_in("Cf-Access-Authenticated-User-Email"),$ip));
+    $r->print(sprintf("Welcome user %s of IP %s to the fake admin page<br>\n",$r->header_in("Cf-Access-Authenticated-User-Email") || "[UnAuthenticated]" ,$ip));
     $r->print("</body></html>\n");
 
     return OK;
