@@ -53,13 +53,38 @@ sub ip {
     return OK;
 }
 
+sub random {
+    my $r = shift;
+    my $params=parse_query($r->args);
+    my $size=1024;
+    my $speed=0;
+    if ($r->uri =~ /\random\/(\d+)\/(\d+)/) { #This is for speed limited url of /speed|random/size
+      $speed=$1;
+      $size=$2;
+    } elsif ($r->uri =~ /\/(\d+)\/(\d+)/) { #This is for speed limited url of /speed|random/size
+      $speed=$1;
+      $size=$2;
+    }
+    if ($size>1024024) {
+      $size=1024024;
+    } elsif ($size<0) {
+      $size=1;
+    }
+    $r->header_out("X-Size",$size);
+    $r->header_out("X-Speed",$speed*1024);
+    $r->header_out("Content-Length",$size);
+    $r->send_http_header("application/octet-stream");
+    $r->sendfile("/dev/urandom",0,$size);
+    return OK;
+}
+
 sub parse_query {
    my ( $query) = @_;
    my $params;
    foreach $var ( split( /&/, $query ) ){
      my ( $k, $v ) = split( /=/, $var );
-     $k = uri_unescape $k;
-     $v = uri_unescape $v;
+     $k = uri_unescape($k);
+     $v = uri_unescape($v);
      if( exists $params->{$k} ) {
         if( 'ARRAY' eq ref $params->{$k} ) {
            push @{ $params->{$k} }, $v;

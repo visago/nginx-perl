@@ -29,7 +29,9 @@ remote_addr=172.17.0.1
 ip=172.17.0.1
 ```
 
-# Speed test URLs
+# Speed test URLs 
+
+WARNING: This can be abused if someone decides to requests this too often ! (Bandwidth abuse)
 
 The webserver serves static content via /www. You can mount to a local
 folder via -v.
@@ -47,3 +49,11 @@ curl http://127.0.0.1/8/test.dat
 Will get the file test.dat with a speed rate limit of 8k/s
 
 Available speeds are 1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384
+
+There's also an endpoint called /random which will generate X bytes from
+/dev/urandom
+
+```
+curl http://127.0.0.1/random/16/1024000
+```
+Will get a random file of size 1024000 bytes at a speed of 16k/s
