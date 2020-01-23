@@ -65,8 +65,8 @@ sub random {
       $speed=$1;
       $size=$2;
     }
-    if ($size>1024024) {
-      $size=1024024;
+    if ($size>1000000000) {
+      $size=1000000000;
     } elsif ($size<0) {
       $size=1;
     }
